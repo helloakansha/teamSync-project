@@ -1,0 +1,2821 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+
+    <!-- SEO: Descriptive title and meta description -->
+
+    <title>TeamSync – Group Study Scheduler for Students</title>
+
+    <meta
+
+      name="description"
+
+      content="TeamSync helps students coordinate group study sessions, manage shared tasks, and stay in sync with their study groups — all in one place."
+
+    />
+
+
+
+    <!-- Google Fonts: Inter for clean, modern typography -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('teamsync-theme') || 'light';
+          document.documentElement.setAttribute('data-theme', saved);
+        } catch(e) {}
+      })();
+    </script>
+
+
+
+    <!-- Our main stylesheet -->
+
+    <link rel="stylesheet" href="style.css" />
+
+  </head>
+
+
+
+  <body>
+
+    <!-- ============================================================
+
+         SECTION 1: LANDING PAGE
+
+         Shown by default. Hidden when user clicks "Get Started".
+
+    ============================================================ -->
+
+    <div id="landing-page" class="page active">
+
+
+
+      <!-- ── Top Navigation Bar ── -->
+
+      <header class="landing-nav">
+
+        <div class="nav-container">
+
+          <!-- Brand logo / name -->
+
+          <a href="#" class="brand" id="nav-brand">
+
+            <span class="brand-icon">📚</span>
+
+            <span class="brand-name">TeamSync</span>
+
+          </a>
+
+
+
+          <!-- Navigation links -->
+
+          <nav class="nav-links" aria-label="Main navigation">
+
+            <a href="#features" class="nav-link">Features</a>
+
+            <a href="#about" class="nav-link">About</a>
+
+            <!-- Logged-out navigation buttons -->
+
+            <button id="nav-login-btn" class="btn btn-outline-small">Log In</button>
+
+            <button id="nav-signup-btn" class="btn btn-primary-small">Sign Up</button>
+
+            <!-- Authenticated-user navigation buttons (hidden when logged out) -->
+
+            <button id="nav-dashboard-btn" class="btn btn-primary-small" style="display: none;">Dashboard</button>
+
+            <button id="nav-logout-btn" class="btn btn-outline-small" style="display: none;">Log Out</button>
+            <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle dark/light mode" type="button"><span class="theme-icon">🌙</span></button>
+
+          </nav>
+
+          <script>
+
+            (function() {
+
+              try {
+
+                var t = localStorage.getItem('authToken');
+
+                var u = localStorage.getItem('currentUser');
+
+                if (t && u) {
+
+                  var parts = t.split('.');
+
+                  if (parts.length === 3) {
+
+                    var b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+
+                    var p = JSON.parse(atob(b64));
+
+                    if (!p.exp || (Date.now() / 1000) < p.exp) {
+
+                      var l = document.getElementById('nav-login-btn');
+
+                      var s = document.getElementById('nav-signup-btn');
+
+                      var d = document.getElementById('nav-dashboard-btn');
+
+                      var o = document.getElementById('nav-logout-btn');
+
+                      if (l) l.style.display = 'none';
+
+                      if (s) s.style.display = 'none';
+
+                      if (d) d.style.display = '';
+
+                      if (o) o.style.display = '';
+
+                    }
+
+                  }
+
+                }
+
+              } catch (e) {}
+
+            })();
+
+          </script>
+
+        </div>
+
+      </header>
+
+
+
+      <!-- ── Hero Section ── -->
+
+      <main>
+
+        <section class="hero" aria-labelledby="hero-heading">
+
+          <div class="hero-content">
+
+            <!-- Pill badge above the headline -->
+
+            <span class="hero-badge">✨ Built for students, by students</span>
+
+
+
+            <h1 id="hero-heading" class="hero-title">
+
+              Study Together,<br />
+
+              <span class="highlight">Achieve More.</span>
+
+            </h1>
+
+
+
+            <p class="hero-description">
+
+              TeamSync makes it effortless to schedule group study sessions,
+
+              coordinate tasks, and keep every member on the same page —
+
+              no back-and-forth messaging needed.
+
+            </p>
+
+
+
+            <!-- Primary CTAs -->
+
+            <div class="hero-actions">
+
+              <button id="get-started-btn" class="btn btn-primary btn-large">
+
+                Get Started — It's Free
+
+              </button>
+
+              <a href="#features" class="btn btn-ghost btn-large">
+
+                Explore Features ↓
+
+              </a>
+
+            </div>
+
+
+
+            <!-- Social proof numbers -->
+
+            <div class="hero-stats">
+
+              <div class="stat">
+
+                <strong id="platform-students-count">38</strong>
+
+                <span>Students</span>
+
+              </div>
+
+              <div class="stat-divider"></div>
+
+              <div class="stat">
+
+                <strong id="platform-groups-count">19</strong>
+
+                <span>Study Groups</span>
+
+              </div>
+
+              <div class="stat-divider"></div>
+
+              <div class="stat">
+
+                <strong id="platform-sessions-count">3</strong>
+
+                <span>Sessions Scheduled</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Decorative illustration/graphic on the right -->
+
+          <div class="hero-visual" aria-hidden="true">
+
+            <div class="floating-card card-1" id="hero-card-session">
+
+              <span class="card-icon" id="hero-card-session-icon">🗓️</span>
+
+              <div>
+
+                <p class="fc-title" id="hero-card-session-title">Study Sessions</p>
+
+                <p class="fc-sub" id="hero-card-session-sub">Coordinate group schedules</p>
+
+              </div>
+
+            </div>
+
+            <div class="floating-card card-2" id="hero-card-task">
+
+              <span class="card-icon" id="hero-card-task-icon">✅</span>
+
+              <div>
+
+                <p class="fc-title" id="hero-card-task-title">Task Tracking</p>
+
+                <p class="fc-sub" id="hero-card-task-sub">Assign and complete topics</p>
+
+              </div>
+
+            </div>
+
+            <div class="floating-card card-3" id="hero-card-group">
+
+              <span class="card-icon" id="hero-card-group-icon">👥</span>
+
+              <div>
+
+                <p class="fc-title" id="hero-card-group-title">Group Collaboration</p>
+
+                <p class="fc-sub" id="hero-card-group-sub">Study together with peers</p>
+
+              </div>
+
+            </div>
+
+            <!-- Central decorative blob -->
+
+            <div class="hero-blob"></div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ── Features Section ── -->
+        <section id="features" class="features-section" aria-labelledby="features-heading">
+          <div class="section-container">
+            <p class="section-label">ENGINEERED FOR ACADEMIC FOCUS</p>
+            <h2 id="features-heading" class="section-title">
+              Everything your study group needs, synchronized in real time.
+            </h2>
+            <p class="section-subtitle">
+              Stop juggling discord threads, whatsapp polls, and lost links. TeamSync provides a quiet, hyper-organized workspace crafted for high achievers.
+            </p>
+
+            <div class="features-grid">
+              <!-- Feature 1: Automated Study Scheduling -->
+              <article class="feature-card" aria-labelledby="feat-1-title">
+                <div class="feature-icon-wrap icon-amber">
+                  <span class="feature-icon">⚡</span>
+                </div>
+                <h3 id="feat-1-title" class="feature-title">Automated Study Scheduling</h3>
+                <p class="feature-desc">
+                  Eliminate time conflicts automatically by finding mutual open slots across members' lecture calendars.
+                </p>
+              </article>
+
+              <!-- Feature 2: Shared Task Kanban -->
+              <article class="feature-card" aria-labelledby="feat-2-title">
+                <div class="feature-icon-wrap icon-orange">
+                  <span class="feature-icon">📋</span>
+                </div>
+                <h3 id="feat-2-title" class="feature-title">Shared Task</h3>
+                <p class="feature-desc">
+                  Track lab reports, assignments, and project deliverables with instant member status badges.
+                </p>
+              </article>
+
+              <!-- Feature 3: Sync Calendar & Reminders -->
+              <article class="feature-card" aria-labelledby="feat-3-title">
+                <div class="feature-icon-wrap icon-yellow">
+                  <span class="feature-icon">🔔</span>
+                </div>
+                <h3 id="feat-3-title" class="feature-title">Sync Calendar & Reminders</h3>
+                <p class="feature-desc">
+                  One-tap synchronization with Google Calendar, Notion, and Outlook so no student misses a revision room.
+                </p>
+              </article>
+
+              <!-- Feature 4: Private Peer Groups -->
+              <article class="feature-card" aria-labelledby="feat-4-title">
+                <div class="feature-icon-wrap icon-rose">
+                  <span class="feature-icon">🔒</span>
+                </div>
+                <h3 id="feat-4-title" class="feature-title">Private Peer Groups</h3>
+                <p class="feature-desc">
+                  Invite-only study pods complete with focused whiteboards, curated resource repositories, and zero noise.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── About / How it works ── -->
+        <section id="about" class="about-section">
+          <div class="section-container">
+            <div style="text-align: center; margin-bottom: 40px;">
+              <p class="section-label">SIMPLE 3-STEP FLOW</p>
+              <h2 class="section-title">How TeamSync Keeps You Ahead</h2>
+            </div>
+
+            <div class="steps-grid">
+              <div class="step-card">
+                <span class="step-watermark">01</span>
+                <h3 class="step-title">Create or Join a Study Pod</h3>
+                <p class="step-desc">
+                  Form specialized circles for Python, DBMS, Algorithms, or exam revisions in seconds with simple join codes.
+                </p>
+              </div>
+
+              <div class="step-card">
+                <span class="step-watermark">02</span>
+                <h3 class="step-title">Coordinate Without Chat Chaos</h3>
+                <p class="step-desc">
+                  Set study topics, assign concept owners, and sync availability without endless "Who is free at 5?" messages.
+                </p>
+              </div>
+
+              <div class="step-card">
+                <span class="step-watermark">03</span>
+                <h3 class="step-title">Ace Exam Week Together</h3>
+                <p class="step-desc">
+                  Complete mutual milestones, track group attendance, and review session notes directly in your synchronized portal.
+                </p>
+              </div>
+            </div>
+
+            <!-- Interactive Live Progress Preview (Preserves automated test targets) -->
+            <div class="about-interactive-preview" style="margin-top: 48px;">
+              <div class="about-card-stack">
+                <div class="acard top" id="about-card-1">
+                  <span id="about-card-1-icon">🎯</span>
+                  <div style="flex: 1;">
+                    <p class="acard-title" id="about-card-1-title">Structured Goals</p>
+                    <p class="acard-sub" id="about-card-1-sub">Track group progress collaboratively</p>
+                    <div class="progress-bar"><div class="progress-fill" id="about-card-1-progress" style="width: 75%"></div></div>
+                  </div>
+                </div>
+
+                <div class="acard bottom" id="about-card-2">
+                  <span id="about-card-2-icon">💻</span>
+                  <div style="flex: 1;">
+                    <p class="acard-title" id="about-card-2-title">Shared Milestones</p>
+                    <p class="acard-sub" id="about-card-2-sub">Coordinate tasks and deadlines</p>
+                    <div class="progress-bar"><div class="progress-fill" id="about-card-2-progress" style="width: 50%"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="text-align: center; margin-top: 24px;">
+                <button id="about-cta-btn" class="btn btn-primary btn-large">Start Studying Together</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Testimonial Banner ── -->
+        <!-- <section class="testimonial-section">
+          <div class="section-container">
+            <div class="testimonial-card">
+              <div class="testimonial-glow" aria-hidden="true"></div>
+              <p class="testimonial-eyebrow">FROM CAMPUS TO FINAL GPA</p>
+              <blockquote class="testimonial-quote">
+                "TeamSync transformed how our engineering cohort coordinates final year projects. No more overlapping schedules or unanswered texts. It's clean, precise, and indispensable."
+              </blockquote>
+              <div class="testimonial-author">
+                <div class="author-avatar">TS</div>
+                <div>
+                  <p class="author-name">Tanya Sharma</p>
+                  <p class="author-role">Computer Science Undergraduate · Group Lead</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section> -->
+
+        <!-- ── Bottom CTA ── -->
+        <section class="bottom-cta-section">
+          <div class="section-container" style="text-align: center;">
+            <h2 class="bottom-cta-title">Ready to elevate your study group?</h2>
+            <p class="bottom-cta-subtitle">
+              Join hundreds of students streamlining their collaborative exam prep today.
+            </p>
+            <button id="bottom-cta-btn" class="btn btn-primary btn-large">Get Started — It's Free</button>
+          </div>
+        </section>
+      </main>
+
+      <!-- ── Footer ── -->
+      <footer class="landing-footer">
+        <div class="footer-container">
+          <div class="footer-brand">
+            <div class="footer-brand-title">
+              <span class="footer-badge-icon">TS</span>
+              <span class="brand-name">TeamSync</span>
+            </div>
+            <p class="footer-tagline">© 2026 Built for students, by students</p>
+          </div>
+
+          <div class="footer-nav-links">
+          
+            
+           <a href="mailto:akanshainsan01@gmail.com" class="footer-link">Support Desk</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- END: Landing Page -->
+
+
+
+
+
+    <!-- ============================================================
+
+         SECTION 2: DASHBOARD
+
+         Hidden by default. Shown when user clicks "Get Started".
+
+    ============================================================ -->
+
+    <div id="dashboard-page" class="page">
+
+
+
+      <!-- ── Sidebar Navigation ── -->
+
+      <aside class="sidebar" id="sidebar" aria-label="Dashboard navigation">
+
+        <!-- Brand at top of sidebar -->
+
+        <div class="sidebar-brand">
+          <div class="sidebar-brand-icon">📚</div>
+          <div class="sidebar-brand-text">
+            <span class="brand-name">TeamSync</span>
+            <span class="brand-workspace">WORKSPACE</span>
+          </div>
+        </div>
+
+
+
+        <!-- Main nav links -->
+
+        <nav class="sidebar-nav" aria-label="Sidebar navigation" >
+
+          <a href="#" class="sidebar-link active" id="nav-dashboard" data-section="dashboard">
+
+            <span class="link-icon">🏠</span>
+
+            <span>Dashboard</span>
+
+          </a>
+
+          <a href="#" class="sidebar-link" id="nav-groups" data-section="groups">
+
+            <span class="link-icon">👥</span>
+
+            <span>My Groups</span>
+
+          </a>
+
+          <a href="#" class="sidebar-link" id="nav-sessions" data-section="sessions">
+
+            <span class="link-icon">🗓️</span>
+
+            <span>Sessions</span>
+
+          </a>
+
+          <a href="#" class="sidebar-link" id="nav-tasks" data-section="tasks">
+
+            <span class="link-icon">✅</span>
+
+            <span>Tasks</span> <span class="nav-counter-badge" id="sidebar-task-badge">1</span>
+
+          </a>
+
+          <a href="#" class="sidebar-link" id="nav-settings" data-section="settings">
+
+            <span class="link-icon">⚙️</span>
+
+            <span>Settings</span>
+
+          </a>
+
+        </nav>
+
+
+
+        <!-- Back to landing at bottom of sidebar -->
+
+        <div class="sidebar-footer">
+
+          <button id="logout-btn" class="btn btn-ghost-small sidebar-back-btn" style="color: var(--color-error); margin-bottom: 6px;">
+
+            🚪 Log Out
+
+          </button>
+
+          <button id="back-to-landing-btn" class="btn btn-ghost-small sidebar-back-btn">
+
+            ← Back to Home
+
+          </button>
+
+        </div>
+
+      </aside>
+
+
+
+      <!-- ── Mobile Header (hamburger) ── -->
+
+      <header class="mobile-header">
+
+        <button id="hamburger-btn" class="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+
+          <span></span><span></span><span></span>
+
+        </button>
+
+        <span class="brand-name">TeamSync</span>
+
+      </header>
+
+
+
+      <!-- ── Main Content Area ── -->
+
+      <main class="dashboard-main" id="dashboard-main">
+
+        <!-- ── Subview 1: Dashboard Overview ── -->
+        <div id="dashboard-view-overview" class="dashboard-subview active">
+<!-- Welcome header bar -->
+
+        <div class="dashboard-topbar">
+
+          <div>
+
+            <h1 class="dashboard-welcome" id="dashboard-welcome">Welcome! 👋</h1>
+
+            <p class="dashboard-subtitle">Here's what's happening with your study groups today.</p>
+
+          </div>
+
+          <div class="topbar-actions">
+
+            <div class="calendar-btn-group" style="display: inline-flex; align-items: center; gap: 6px;">
+
+              <button id="connect-calendar-btn" class="btn btn-outline btn-calendar" type="button">
+
+                📅 Connect Google Calendar
+
+              </button>
+
+              <button id="disconnect-calendar-btn" class="btn btn-outline btn-calendar-disconnect" type="button" style="display: none;" title="Disconnect your Google Calendar">
+
+                Disconnect
+
+              </button>
+
+            </div>
+
+            <!-- These two buttons trigger modals -->
+
+            <button id="create-group-btn" class="btn btn-primary">
+
+              + Create Group
+
+            </button>
+
+            <button id="join-group-btn" class="btn btn-outline">
+
+              🔗 Join Group
+
+            </button>
+
+            <button id="dashboard-theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle dark/light mode" type="button"><span class="theme-icon">🌙</span></button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ── Stat Cards Row ── -->
+
+        <section class="stats-row" aria-label="Quick stats">
+
+          <div class="stat-card" id="stat-groups">
+
+            <div class="stat-card-icon icon-indigo">👥</div>
+
+            <div class="stat-card-body">
+
+              <!-- JavaScript will update this count dynamically from PostgreSQL -->
+
+              <p class="stat-card-number" id="group-count">0</p><span class="stat-badge stat-badge-active">Active</span>
+
+              <p class="stat-card-label">Study Groups</p>
+
+            </div>
+
+          </div>
+
+          <div class="stat-card" id="stat-tasks">
+
+            <div class="stat-card-icon icon-amber">✅</div>
+
+            <div class="stat-card-body">
+
+              <p class="stat-card-number" id="dashboard-tasks-count">0</p><span class="stat-badge stat-badge-due">Due Today</span>
+
+              <p class="stat-card-label">Pending Tasks</p>
+
+            </div>
+
+          </div>
+
+          <div class="stat-card" id="stat-sessions">
+
+            <div class="stat-card-icon icon-teal">🗓️</div>
+
+            <div class="stat-card-body">
+
+              <p class="stat-card-number" id="dashboard-sessions-count">0</p><span class="stat-badge stat-badge-clear">Clear</span>
+
+              <p class="stat-card-label">Upcoming Sessions</p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ── My Study Groups ── -->
+
+        <section class="dashboard-section" aria-labelledby="groups-heading">
+
+          <div class="section-header">
+
+            <h2 id="groups-heading" class="section-heading">My Study Groups</h2>
+
+            <button id="view-all-groups-btn" class="btn-text-link">View all →</button>
+
+          </div>
+
+
+
+          <!-- 
+
+            This container is where JavaScript adds dynamic group cards fetched from PostgreSQL.
+
+          -->
+
+          <div class="groups-grid" id="groups-grid">
+
+            <!-- Dynamically populated from backend / PostgreSQL -->
+
+          </div>
+
+          <!-- End: #groups-grid -->
+
+        </section>
+
+
+
+        <!-- ── Upcoming Sessions ── -->
+
+        <section class="dashboard-section" aria-labelledby="sessions-heading">
+
+          <div class="section-header">
+
+            <h2 id="sessions-heading" class="section-heading">Upcoming Sessions</h2>
+
+            <button id="dashboard-view-calendar-btn" class="btn-text-link">View calendar →</button>
+
+          </div>
+
+
+
+          <div class="sessions-list" id="sessions-list">
+
+            <!-- Sessions are rendered by JavaScript using sample data in script.js -->
+
+            <!-- This keeps HTML clean and makes it easy to add dynamic sessions later -->
+
+          </div>
+
+        </section>
+        </div>
+        <!-- End: #dashboard-view-overview -->
+
+        <!-- ── Subview 2: My Groups ── -->
+        <div id="dashboard-view-groups" class="dashboard-subview" style="display: none;">
+          <div class="dashboard-topbar">
+            <div>
+              <h1 class="dashboard-welcome">My Study Groups</h1>
+              <p class="dashboard-subtitle">Manage, browse, and organize all your study groups.</p>
+            </div>
+            <div class="topbar-actions">
+              <button id="groups-view-create-btn" class="btn btn-primary">+ Create Group</button>
+              <button id="groups-view-join-btn" class="btn btn-outline">🔗 Join Group</button>
+            </div>
+          </div>
+          <section class="dashboard-section">
+            <div class="groups-grid" id="my-groups-full-grid">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+        </div>
+        <!-- End: #dashboard-view-groups -->
+
+        <!-- ── Subview 3: Sessions ── -->
+        <div id="dashboard-view-sessions" class="dashboard-subview" style="display: none;">
+          <div class="dashboard-topbar">
+            <div>
+              <h1 class="dashboard-welcome">Study Sessions</h1>
+              <p class="dashboard-subtitle">Coordinate study schedules and monitor calendar synchronization.</p>
+            </div>
+            <div class="topbar-actions">
+              <div class="task-filter-tabs" id="sessions-filter-tabs" style="margin-bottom: 0;">
+                <button class="task-filter-tab active" data-session-filter="all">All Sessions</button>
+                <button class="task-filter-tab" data-session-filter="upcoming">Upcoming</button>
+                <button class="task-filter-tab" data-session-filter="past">Past</button>
+              </div>
+            </div>
+          </div>
+          <section class="dashboard-section">
+            <div class="sessions-list" id="my-sessions-full-list">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+        </div>
+        <!-- End: #dashboard-view-sessions -->
+
+        <!-- ── Subview 4: Tasks ── -->
+        <div id="dashboard-view-tasks" class="dashboard-subview" style="display: none;">
+          <div class="dashboard-topbar">
+            <div>
+              <h1 class="dashboard-welcome">Tasks</h1>
+              <p class="dashboard-subtitle">Track, update, and complete tasks across all your study groups.</p>
+            </div>
+            <div class="topbar-actions">
+              <div class="task-filter-tabs" id="tasks-filter-tabs" style="margin-bottom: 0;">
+                <button class="task-filter-tab active" data-task-filter="all">All Tasks</button>
+                <button class="task-filter-tab" data-task-filter="pending">⏳ Pending</button>
+                <button class="task-filter-tab" data-task-filter="in_progress">🔄 In Progress</button>
+                <button class="task-filter-tab" data-task-filter="completed">✅ Completed</button>
+              </div>
+            </div>
+          </div>
+          <div class="task-stats-panel" id="user-task-stats-panel" style="margin-bottom: var(--space-6);">
+            <div class="task-stats-grid">
+              <div class="task-stat-item">
+                <span class="task-stat-val" id="user-tasks-total">0</span>
+                <span class="task-stat-lbl">Total Tasks</span>
+              </div>
+              <div class="task-stat-item">
+                <span class="task-stat-val" id="user-tasks-pending" style="color: var(--color-amber);">0</span>
+                <span class="task-stat-lbl">Pending</span>
+              </div>
+              <div class="task-stat-item">
+                <span class="task-stat-val" id="user-tasks-inprogress" style="color: var(--color-indigo);">0</span>
+                <span class="task-stat-lbl">In Progress</span>
+              </div>
+              <div class="task-stat-item">
+                <span class="task-stat-val" id="user-tasks-completed" style="color: var(--color-success);">0</span>
+                <span class="task-stat-lbl">Completed</span>
+              </div>
+              <div class="task-stat-item">
+                <span class="task-stat-val" id="user-tasks-rate">0%</span>
+                <span class="task-stat-lbl">Completion Rate</span>
+              </div>
+            </div>
+            <div class="task-progress-bar-bg" style="margin-top: var(--space-4);">
+              <div class="task-progress-bar-fill" id="user-tasks-progress-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+          <section class="dashboard-section">
+            <div class="tasks-list" id="my-tasks-full-list">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+        </div>
+        <!-- End: #dashboard-view-tasks -->
+
+        <!-- ── Subview 5: Settings ── -->
+        <div id="dashboard-view-settings" class="dashboard-subview" style="display: none;">
+          <div class="dashboard-topbar">
+            <div>
+              <h1 class="dashboard-welcome">Settings</h1>
+              <p class="dashboard-subtitle">Manage your account details and integration preferences.</p>
+            </div>
+          </div>
+          <section class="dashboard-section" style="display: flex; flex-direction: column; gap: var(--space-6);">
+            <!-- Account Profile Card -->
+            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6);">
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);">👤 Account Profile</h3>
+              <p style="font-size: 13px; color: var(--color-text-muted); margin-bottom: var(--space-5);">Your authenticated TeamSync profile information.</p>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4);">
+                <div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+                    <label style="font-size: 12px; font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Full Name</label>
+                    <button id="settings-edit-name-btn" type="button" class="btn-text-link" style="font-size: 12px; padding: 0; color: var(--color-primary); cursor: pointer;" title="Edit your name">✏️ Edit</button>
+                  </div>
+                  <div id="settings-name-display-wrap">
+                    <p id="settings-user-name" style="font-size: 15px; font-weight: 600; color: var(--color-text); margin-top: 4px;">--</p>
+                  </div>
+                  <form id="settings-edit-name-form" style="display: none; margin-top: 6px; gap: 6px; align-items: center; flex-wrap: wrap;">
+                    <input type="text" id="settings-name-input" class="form-input" style="padding: 6px 12px; font-size: 14px; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); width: 170px;" maxlength="100" required />
+                    <button type="submit" id="settings-save-name-btn" class="btn btn-primary-small" style="padding: 5px 12px; font-size: 12px;">Save</button>
+                    <button type="button" id="settings-cancel-name-btn" class="btn btn-ghost-small" style="padding: 5px 10px; font-size: 12px;">Cancel</button>
+                  </form>
+                  <p id="settings-name-feedback" style="font-size: 12px; margin-top: 4px; display: none;"></p>
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Email Address</label>
+                  <p id="settings-user-email" style="font-size: 15px; font-weight: 600; color: var(--color-text); margin-top: 4px;">--</p>
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">User ID</label>
+                  <p id="settings-user-id" style="font-size: 15px; font-weight: 600; color: var(--color-text); margin-top: 4px;">#--</p>
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Active Study Groups</label>
+                  <p id="settings-groups-count" style="font-size: 15px; font-weight: 600; color: var(--color-text); margin-top: 4px;">0</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Google Calendar Integration Card -->
+            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-4);">
+                <div>
+                  <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);">📅 Google Calendar Integration</h3>
+                  <p style="font-size: 13px; color: var(--color-text-muted); max-width: 600px; line-height: 1.5;">
+                    Synchronize your TeamSync study sessions directly to your Google Calendar. Sessions created or edited by you will automatically sync in the background with duplicate protection and retry recovery.
+                  </p>
+                </div>
+                <div>
+                  <span id="settings-calendar-badge" class="session-tag session-tag-not-connected">Not Connected</span>
+                </div>
+              </div>
+              <div style="margin-top: var(--space-5); display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;">
+                <button id="settings-connect-calendar-btn" class="btn btn-outline btn-calendar" type="button">📅 Connect Google Calendar</button>
+                <button id="settings-disconnect-calendar-btn" class="btn btn-outline btn-calendar-disconnect" type="button" style="display: none;">Disconnect</button>
+              </div>
+            </div>
+
+            <!-- Platform Preferences (Honest Not Implemented notice) -->
+            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6);">
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2);">⚙️ Preferences &amp; Notifications</h3>
+              <p style="font-size: 13px; color: var(--color-text-muted); margin-bottom: var(--space-4);">Customize application appearance and notification alerts.</p>
+              <div style="padding: 16px 20px; background: rgba(99, 102, 241, 0.06); border: 1px dashed var(--color-primary-light); border-radius: var(--radius-md);">
+                <p style="font-size: 13px; color: var(--color-text-muted); line-height: 1.5;">
+                  ℹ️ <strong>Feature Notice:</strong> Notification delivery schedules, email digests, and theme customization are planned for an upcoming release and are currently <em>not implemented</em>.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- End: #dashboard-view-settings -->
+</main>
+
+      <!-- End: dashboard-main -->
+
+
+
+    </div>
+
+    <!-- END: Dashboard Page -->
+
+
+
+
+
+    <!-- ============================================================
+
+         SECTION 3: GROUP DETAILS PAGE
+
+         Shown when user clicks "Open →" on a study group card.
+
+    ============================================================ -->
+
+    <div id="group-details-page" class="page">
+
+      <div class="details-layout">
+
+
+
+        <!-- Top navigation with Back button and Brand -->
+
+        <header class="details-topbar">
+
+          <button id="details-back-btn" class="btn btn-outline-small">
+
+            ← Back to Dashboard
+
+          </button>
+
+          <div class="details-brand">
+
+            <span class="brand-icon">📚</span>
+
+            <span class="brand-name">TeamSync</span>
+
+          </div>
+
+        </header>
+
+
+
+        <!-- Loading state -->
+
+        <div id="group-details-loading" class="details-status-card" hidden>
+
+          <div class="details-spinner"></div>
+
+          <p>Loading study group details...</p>
+
+        </div>
+
+
+
+        <!-- Friendly Error State (e.g. 404 or backend down) -->
+
+        <div id="group-details-error" class="details-status-card details-error-card" hidden>
+
+          <span class="error-emoji">⚠️</span>
+
+          <h2 id="group-details-error-title">Study Group Not Found</h2>
+
+          <p id="group-details-error-msg">The group you are looking for does not exist or may have been deleted.</p>
+
+          <button id="details-error-back-btn" class="btn btn-primary" style="margin-top: 16px;">
+
+            Return to Dashboard
+
+          </button>
+
+        </div>
+
+
+
+        <!-- Main Details Content (shown when group loaded) -->
+
+        <main id="group-details-content" class="details-main" hidden>
+
+
+
+          <!-- Group Header Banner Card -->
+
+          <div class="details-hero-card">
+
+            <div class="details-hero-main">
+
+              <div class="group-avatar avatar-indigo details-avatar" id="detail-avatar">SG</div>
+
+              <div class="details-meta">
+
+                <div class="details-title-row">
+
+                  <h1 class="details-title" id="detail-group-name">Group Name</h1>
+
+                  <span class="group-badge badge-active">Active</span>
+
+                </div>
+
+                <p class="details-subject" id="detail-group-subject">📚 Subject</p>
+
+              </div>
+
+            </div>
+
+            <div class="details-hero-actions">
+
+              <button id="invite-members-btn" class="btn btn-primary">
+
+                ✉️ Invite Members
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Description Section -->
+
+          <section class="details-card">
+
+            <h2 class="details-card-heading">About this Group</h2>
+
+            <p class="details-desc-text" id="detail-group-desc">Group description</p>
+
+          </section>
+
+
+
+          <!-- Group Quick Stats Row -->
+
+          <section class="stats-row" aria-label="Group statistics">
+
+            <div class="stat-card">
+
+              <div class="stat-card-icon icon-indigo">👥</div>
+
+              <div class="stat-card-body">
+
+                <p class="stat-card-number" id="detail-members-count">0</p>
+
+                <p class="stat-card-label">Group Members</p>
+
+              </div>
+
+            </div>
+
+            <div class="stat-card">
+
+              <div class="stat-card-icon icon-amber">✅</div>
+
+              <div class="stat-card-body">
+
+                <p class="stat-card-number" id="detail-tasks-count">0</p>
+
+                <p class="stat-card-label">Active Tasks</p>
+
+              </div>
+
+            </div>
+
+            <div class="stat-card">
+
+              <div class="stat-card-icon icon-teal">🗓️</div>
+
+              <div class="stat-card-body">
+
+                <p class="stat-card-number" id="detail-sessions-count">0</p>
+
+                <p class="stat-card-label">Upcoming Sessions</p>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+
+          <!-- Group Tasks Section -->
+
+          <section class="details-card" aria-labelledby="detail-tasks-heading">
+
+            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+
+              <div class="section-title-wrap" style="display: flex; align-items: center; gap: 10px;">
+
+                <h2 id="detail-tasks-heading" class="section-heading" style="margin: 0;">Group Tasks</h2>
+
+                <span class="group-badge" id="tasks-total-badge">0 tasks</span>
+
+              </div>
+
+              <button id="add-task-btn" class="btn btn-primary btn-small">
+
+                + Add Task
+
+              </button>
+
+            </div>
+
+
+
+            <!-- Task Statistics Bar -->
+
+            <div class="task-stats-panel" id="task-stats-panel">
+
+              <div class="task-stats-grid">
+
+                <div class="task-stat-item">
+
+                  <span class="task-stat-val val-pending" id="stat-pending-count">0</span>
+
+                  <span class="task-stat-lbl">⏳ Pending</span>
+
+                </div>
+
+                <div class="task-stat-item">
+
+                  <span class="task-stat-val val-inprogress" id="stat-inprogress-count">0</span>
+
+                  <span class="task-stat-lbl">🔄 In Progress</span>
+
+                </div>
+
+                <div class="task-stat-item">
+
+                  <span class="task-stat-val val-completed" id="stat-completed-count">0</span>
+
+                  <span class="task-stat-lbl">✅ Completed</span>
+
+                </div>
+
+                <div class="task-stat-item">
+
+                  <span class="task-stat-val val-rate" id="stat-completion-rate">0%</span>
+
+                  <span class="task-stat-lbl">📈 Completion</span>
+
+                </div>
+
+              </div>
+
+              <!-- Progress Bar -->
+
+              <div class="task-progress-bar-bg" title="Task completion rate">
+
+                <div class="task-progress-bar-fill" id="task-progress-fill" style="width: 0%;"></div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Task Status Filter Tabs -->
+
+            <div class="task-filter-tabs" role="tablist">
+
+              <button class="task-filter-tab active" data-filter="all" id="tab-filter-all">All (<span id="tab-count-all">0</span>)</button>
+
+              <button class="task-filter-tab" data-filter="pending" id="tab-filter-pending">Pending (<span id="tab-count-pending">0</span>)</button>
+
+              <button class="task-filter-tab" data-filter="in_progress" id="tab-filter-inprogress">In Progress (<span id="tab-count-inprogress">0</span>)</button>
+
+              <button class="task-filter-tab" data-filter="completed" id="tab-filter-completed">Completed (<span id="tab-count-completed">0</span>)</button>
+
+            </div>
+
+
+
+            <!-- Tasks List Container -->
+
+            <div class="tasks-list" id="detail-tasks-list">
+
+              <!-- Dynamically populated -->
+
+            </div>
+
+          </section>
+
+
+
+          <!-- Upcoming Study Sessions -->
+
+          <section class="details-card" aria-labelledby="detail-sessions-heading">
+
+            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+
+              <div class="section-title-wrap" style="display: flex; align-items: center; gap: 10px;">
+
+                <h2 id="detail-sessions-heading" class="section-heading" style="margin: 0;">Upcoming Study Sessions</h2>
+
+                <span class="group-badge" id="detail-sessions-badge">0 sessions</span>
+
+              </div>
+
+              <button id="add-session-btn" class="btn btn-primary btn-small">
+
+                + Schedule Session
+
+              </button>
+
+            </div>
+
+            <div class="sessions-list" id="detail-sessions-list">
+
+              <!-- Dynamically rendered -->
+
+            </div>
+
+          </section>
+
+
+
+          <!-- Group Members Section -->
+
+          <section class="details-card" aria-labelledby="detail-members-heading">
+
+            <div class="section-header">
+
+              <h2 id="detail-members-heading" class="section-heading">Group Members</h2>
+
+              <span class="group-badge" id="detail-members-badge">0 members</span>
+
+            </div>
+
+            <div class="members-grid" id="detail-members-list">
+
+              <!-- Dynamically rendered -->
+
+            </div>
+
+          </section>
+
+
+
+        </main>
+
+
+
+      </div>
+
+    </div>
+
+    <!-- END: Group Details Page -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 1: CREATE GROUP
+
+         Shown when user clicks "+ Create Group"
+
+    ============================================================ -->
+
+    <div
+
+      id="create-group-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="create-modal-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-header">
+
+          <h2 id="create-modal-title" class="modal-title">Create a Study Group</h2>
+
+          <button class="modal-close-btn" id="close-create-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <form id="create-group-form" novalidate>
+
+          <!-- Group Name -->
+
+          <div class="form-group">
+
+            <label for="group-name-input" class="form-label">Group Name <span class="required">*</span></label>
+
+            <input
+
+              type="text"
+
+              id="group-name-input"
+
+              class="form-input"
+
+              placeholder="e.g. Advanced Python, GATE Maths"
+
+              maxlength="60"
+
+              autocomplete="off"
+
+            />
+
+            <!-- Error shown by JavaScript when field is empty -->
+
+            <p class="form-error" id="group-name-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <!-- Subject -->
+
+          <div class="form-group">
+
+            <label for="group-subject-input" class="form-label">Subject / Topic</label>
+
+            <input
+
+              type="text"
+
+              id="group-subject-input"
+
+              class="form-input"
+
+              placeholder="e.g. Data Structures, Organic Chemistry"
+
+              maxlength="60"
+
+              autocomplete="off"
+
+            />
+
+          </div>
+
+
+
+          <!-- Description -->
+
+          <div class="form-group">
+
+            <label for="group-desc-input" class="form-label">Description <span class="required">*</span></label>
+
+            <textarea
+
+              id="group-desc-input"
+
+              class="form-input form-textarea"
+
+              placeholder="What will this group study? What are the goals?"
+
+              maxlength="300"
+
+              rows="3"
+
+            ></textarea>
+
+            <p class="form-error" id="group-desc-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <div class="modal-actions">
+
+            <button type="button" class="btn btn-ghost" id="cancel-create-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary" id="submit-create-btn">Create Group</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- END: Create Group Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 2: JOIN GROUP
+
+         Shown when user clicks "Join Group"
+
+    ============================================================ -->
+
+    <div
+
+      id="join-group-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="join-modal-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-header">
+
+          <h2 id="join-modal-title" class="modal-title">Join a Study Group</h2>
+
+          <button class="modal-close-btn" id="close-join-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <form id="join-group-form" novalidate>
+
+          <!-- Invitation Code -->
+
+          <div class="form-group">
+
+            <label for="invite-code-input" class="form-label">Invitation Code <span class="required">*</span></label>
+
+            <input
+
+              type="text"
+
+              id="invite-code-input"
+
+              class="form-input"
+
+              placeholder="e.g. TS-B7HR9D"
+
+              maxlength="20"
+
+              autocomplete="off"
+
+            />
+
+            <p class="form-error" id="invite-code-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <p class="form-error" id="join-general-error" role="alert" aria-live="polite" style="margin-bottom: 12px;"></p>
+
+
+
+          <!-- Success message shown after "joining" -->
+
+          <div class="success-notice" id="join-success-notice" hidden>
+
+            <span>🎉</span>
+
+            <p id="join-success-text"></p>
+
+          </div>
+
+
+
+          <div class="modal-actions" id="join-modal-actions">
+
+            <button type="button" class="btn btn-ghost" id="cancel-join-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary" id="submit-join-btn">Join Group</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- END: Join Group Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 3: LOGIN
+
+         Shown when user clicks "Log In"
+
+    ============================================================ -->
+
+    <div
+
+      id="login-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="login-modal-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-header">
+
+          <h2 id="login-modal-title" class="modal-title">Welcome Back 👋</h2>
+
+          <button class="modal-close-btn" id="close-login-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <form id="login-form" novalidate>
+
+          <div class="form-group">
+
+            <label for="login-email-input" class="form-label">Email Address <span class="required">*</span></label>
+
+            <input
+
+              type="email"
+
+              id="login-email-input"
+
+              class="form-input"
+
+              placeholder="e.g. you@example.com"
+
+              autocomplete="email"
+
+            />
+
+            <p class="form-error" id="login-email-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="login-password-input" class="form-label">Password <span class="required">*</span></label>
+
+            <input
+
+              type="password"
+
+              id="login-password-input"
+
+              class="form-input"
+
+              placeholder="Enter your password"
+
+              autocomplete="current-password"
+
+            />
+
+            <p class="form-error" id="login-password-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <p class="form-error" id="login-general-error" role="alert" aria-live="polite" style="margin-bottom: 12px;"></p>
+
+
+
+          <div class="modal-actions">
+
+            <button type="button" class="btn btn-ghost" id="cancel-login-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary" id="submit-login-btn">Log In</button>
+
+          </div>
+
+
+
+          <p style="margin-top: 16px; font-size: 13px; text-align: center; color: var(--color-text-muted);">
+
+            Don't have an account? <a href="#" id="switch-to-signup" style="color: var(--color-primary); font-weight: 600;">Sign Up</a>
+
+          </p>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- END: Login Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 4: SIGN UP
+
+         Shown when user clicks "Sign Up" or "Get Started"
+
+    ============================================================ -->
+
+    <div
+
+      id="signup-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="signup-modal-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-header">
+
+          <h2 id="signup-modal-title" class="modal-title">Join TeamSync 🚀</h2>
+
+          <button class="modal-close-btn" id="close-signup-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <form id="signup-form" novalidate>
+
+          <div class="form-group">
+
+            <label for="signup-name-input" class="form-label">Full Name <span class="required">*</span></label>
+
+            <input
+
+              type="text"
+
+              id="signup-name-input"
+
+              class="form-input"
+
+              placeholder="e.g. Alex Johnson"
+
+              autocomplete="name"
+
+            />
+
+            <p class="form-error" id="signup-name-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="signup-email-input" class="form-label">Email Address <span class="required">*</span></label>
+
+            <input
+
+              type="email"
+
+              id="signup-email-input"
+
+              class="form-input"
+
+              placeholder="e.g. you@example.com"
+
+              autocomplete="email"
+
+            />
+
+            <p class="form-error" id="signup-email-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="signup-password-input" class="form-label">Password <span class="required">*</span></label>
+
+            <input
+
+              type="password"
+
+              id="signup-password-input"
+
+              class="form-input"
+
+              placeholder="Create a password (min. 6 chars)"
+
+              autocomplete="new-password"
+
+            />
+
+            <p class="form-error" id="signup-password-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <p class="form-error" id="signup-general-error" role="alert" aria-live="polite" style="margin-bottom: 12px;"></p>
+
+
+
+          <div class="modal-actions">
+
+            <button type="button" class="btn btn-ghost" id="cancel-signup-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary" id="submit-signup-btn">Create Account</button>
+
+          </div>
+
+
+
+          <p style="margin-top: 16px; font-size: 13px; text-align: center; color: var(--color-text-muted);">
+
+            Already have an account? <a href="#" id="switch-to-login" style="color: var(--color-primary); font-weight: 600;">Log In</a>
+
+          </p>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- END: Sign Up Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 5: INVITE MEMBERS
+
+         Shown when user clicks "Invite Members" on Group Details
+
+    ============================================================ -->
+
+    <div
+
+      id="invite-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="invite-modal-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-header">
+
+          <h2 id="invite-modal-title" class="modal-title">Invite to Study Group ✉️</h2>
+
+          <button class="modal-close-btn" id="close-invite-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <div class="invite-modal-body">
+
+          <p class="invite-modal-desc">
+
+            Share this invitation code or link with other students to invite them to this study group.
+
+          </p>
+
+
+
+          <div class="invite-code-card">
+
+            <span class="invite-code-label">Invitation Code</span>
+
+            <div class="invite-code-row">
+
+              <span class="invite-code-val" id="invite-code-val">TS-XXXXXX</span>
+
+              <button type="button" class="btn btn-primary-small" id="copy-invite-code-btn">
+
+                📋 Copy Code
+
+              </button>
+
+            </div>
+
+            <p class="invite-expiry-note" id="invite-expiry-note">⏱️ Valid for 7 days</p>
+
+          </div>
+
+
+
+          <div class="form-group" style="margin-top: 18px;">
+
+            <label for="invite-link-input" class="form-label">Shareable Link</label>
+
+            <div class="invite-link-row">
+
+              <input
+
+                type="text"
+
+                id="invite-link-input"
+
+                class="form-input"
+
+                readonly
+
+                value=""
+
+              />
+
+              <button type="button" class="btn btn-outline-small" id="copy-invite-link-btn">
+
+                🔗 Copy Link
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+
+          <p class="form-error" id="invite-general-error" role="alert" aria-live="polite" style="margin-top: 8px;"></p>
+
+
+
+          <div class="modal-actions" style="margin-top: 20px;">
+
+            <button type="button" class="btn btn-ghost" id="close-invite-btn">Done</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- END: Invite Members Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 5: CREATE TASK
+
+         Shown when user clicks "+ Add Task" inside Group Details
+
+    ============================================================ -->
+
+    <div
+
+      id="create-task-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="create-task-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-header">
+
+          <h2 id="create-task-title" class="modal-title">Create a Study Task</h2>
+
+          <button class="modal-close-btn" id="close-task-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <form id="create-task-form" novalidate>
+
+          <!-- Task Title -->
+
+          <div class="form-group">
+
+            <label for="task-title-input" class="form-label">Task Title <span class="required">*</span></label>
+
+            <input
+
+              type="text"
+
+              id="task-title-input"
+
+              class="form-input"
+
+              placeholder="e.g. Complete Chapter 4 Practice Problems"
+
+              maxlength="150"
+
+              autocomplete="off"
+
+            />
+
+            <p class="form-error" id="task-title-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <!-- Description -->
+
+          <div class="form-group">
+
+            <label for="task-desc-input" class="form-label">Description <span class="optional">(optional)</span></label>
+
+            <textarea
+
+              id="task-desc-input"
+
+              class="form-textarea"
+
+              placeholder="Add details, syllabus notes, or links..."
+
+              rows="3"
+
+              maxlength="500"
+
+            ></textarea>
+
+          </div>
+
+
+
+          <!-- Assign To Member -->
+
+          <div class="form-group">
+
+            <label for="task-assignee-select" class="form-label">Assign to Member</label>
+
+            <select id="task-assignee-select" class="form-input">
+
+              <option value="">👤 Unassigned</option>
+
+              <!-- Dynamically populated with group members -->
+
+            </select>
+
+          </div>
+
+
+
+          <!-- Deadline / Due Date & Initial Status -->
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+
+            <div class="form-group">
+
+              <label for="task-due-date-input" class="form-label">Deadline / Due Date</label>
+
+              <input
+
+                type="date"
+
+                id="task-due-date-input"
+
+                class="form-input"
+
+              />
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="task-status-select" class="form-label">Initial Status</label>
+
+              <select id="task-status-select" class="form-input">
+
+                <option value="pending" selected>⏳ Pending</option>
+
+                <option value="in_progress">🔄 In Progress</option>
+
+                <option value="completed">✅ Completed</option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+
+          <p class="form-error" id="task-general-error" role="alert" aria-live="polite"></p>
+
+
+
+          <div class="modal-actions" style="margin-top: 20px;">
+
+            <button type="button" class="btn btn-ghost" id="cancel-task-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary" id="submit-task-btn">Create Task</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- END: Create Task Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 6: EDIT TASK
+
+         Shown when user clicks "Edit" on a task card
+
+    ============================================================ -->
+
+    <div
+
+      id="edit-task-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="edit-task-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-header">
+
+          <h2 id="edit-task-title" class="modal-title">Edit Study Task ✏️</h2>
+
+          <button class="modal-close-btn" id="close-edit-task-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <form id="edit-task-form" novalidate>
+
+          <input type="hidden" id="edit-task-id" />
+
+
+
+          <!-- Task Title -->
+
+          <div class="form-group">
+
+            <label for="edit-task-title-input" class="form-label">Task Title <span class="required">*</span></label>
+
+            <input
+
+              type="text"
+
+              id="edit-task-title-input"
+
+              class="form-input"
+
+              placeholder="e.g. Complete Chapter 4 Practice Problems"
+
+              maxlength="150"
+
+              autocomplete="off"
+
+            />
+
+            <p class="form-error" id="edit-task-title-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <!-- Description -->
+
+          <div class="form-group">
+
+            <label for="edit-task-desc-input" class="form-label">Description <span class="optional">(optional)</span></label>
+
+            <textarea
+
+              id="edit-task-desc-input"
+
+              class="form-textarea"
+
+              placeholder="Add details, syllabus notes, or links..."
+
+              rows="3"
+
+              maxlength="500"
+
+            ></textarea>
+
+          </div>
+
+
+
+          <!-- Assign To Member -->
+
+          <div class="form-group">
+
+            <label for="edit-task-assignee-select" class="form-label">Assign to Member</label>
+
+            <select id="edit-task-assignee-select" class="form-input">
+
+              <option value="">👤 Unassigned</option>
+
+              <!-- Dynamically populated with group members -->
+
+            </select>
+
+          </div>
+
+
+
+          <!-- Deadline / Due Date & Status -->
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+
+            <div class="form-group">
+
+              <label for="edit-task-due-date-input" class="form-label">Deadline / Due Date</label>
+
+              <input
+
+                type="date"
+
+                id="edit-task-due-date-input"
+
+                class="form-input"
+
+              />
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="edit-task-status-select" class="form-label">Status</label>
+
+              <select id="edit-task-status-select" class="form-input">
+
+                <option value="pending">⏳ Pending</option>
+
+                <option value="in_progress">🔄 In Progress</option>
+
+                <option value="completed">✅ Completed</option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+
+          <p class="form-error" id="edit-task-general-error" role="alert" aria-live="polite"></p>
+
+
+
+          <div class="modal-actions" style="margin-top: 20px;">
+
+            <button type="button" class="btn btn-ghost" id="cancel-edit-task-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary" id="submit-edit-task-btn">Save Changes</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- END: Edit Task Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 7: SCHEDULE STUDY SESSION
+
+         Shown when user clicks "+ Schedule Session" inside Group Details
+
+    ============================================================ -->
+
+    <div
+
+      id="schedule-session-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="schedule-session-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-header">
+
+          <h2 id="schedule-session-title" class="modal-title">Schedule Study Session 🗓️</h2>
+
+          <button class="modal-close-btn" id="close-schedule-session-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <form id="schedule-session-form" novalidate>
+
+          <!-- Session Title -->
+
+          <div class="form-group">
+
+            <label for="session-title-input" class="form-label">Session Title <span class="required">*</span></label>
+
+            <input
+
+              type="text"
+
+              id="session-title-input"
+
+              class="form-input"
+
+              placeholder="e.g. Chapter 5 Exam Prep & Review"
+
+              maxlength="150"
+
+              autocomplete="off"
+
+            />
+
+            <p class="form-error" id="session-title-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <!-- Description -->
+
+          <div class="form-group">
+
+            <label for="session-desc-input" class="form-label">Description <span class="optional">(optional)</span></label>
+
+            <textarea
+
+              id="session-desc-input"
+
+              class="form-textarea"
+
+              placeholder="Session objectives, meeting links, or topics to cover..."
+
+              rows="3"
+
+              maxlength="500"
+
+            ></textarea>
+
+          </div>
+
+
+
+          <!-- Session Date -->
+
+          <div class="form-group">
+
+            <label for="session-date-input" class="form-label">Date <span class="required">*</span></label>
+
+            <input
+
+              type="date"
+
+              id="session-date-input"
+
+              class="form-input"
+
+            />
+
+            <p class="form-error" id="session-date-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <!-- Start & End Time -->
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+
+            <div class="form-group">
+
+              <label for="session-start-time-input" class="form-label">Start Time <span class="required">*</span></label>
+
+              <input
+
+                type="time"
+
+                id="session-start-time-input"
+
+                class="form-input"
+
+              />
+
+              <p class="form-error" id="session-start-time-error" role="alert" aria-live="polite"></p>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="session-end-time-input" class="form-label">End Time <span class="required">*</span></label>
+
+              <input
+
+                type="time"
+
+                id="session-end-time-input"
+
+                class="form-input"
+
+              />
+
+              <p class="form-error" id="session-end-time-error" role="alert" aria-live="polite"></p>
+
+            </div>
+
+          </div>
+
+
+
+          <p class="form-error" id="session-general-error" role="alert" aria-live="polite"></p>
+
+
+
+          <div class="modal-actions" style="margin-top: 20px;">
+
+            <button type="button" class="btn btn-ghost" id="cancel-schedule-session-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary" id="submit-schedule-session-btn">Schedule Session</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- END: Schedule Study Session Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 8: EDIT STUDY SESSION
+
+         Shown when user clicks "Edit" on a session in Group Details
+
+    ============================================================ -->
+
+    <div
+
+      id="edit-session-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="edit-session-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-header">
+
+          <h2 id="edit-session-title" class="modal-title">Edit Study Session ✏️</h2>
+
+          <button class="modal-close-btn" id="close-edit-session-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <form id="edit-session-form" novalidate>
+
+          <input type="hidden" id="edit-session-id" />
+
+
+
+          <!-- Session Title -->
+
+          <div class="form-group">
+
+            <label for="edit-session-title-input" class="form-label">Session Title <span class="required">*</span></label>
+
+            <input
+
+              type="text"
+
+              id="edit-session-title-input"
+
+              class="form-input"
+
+              placeholder="e.g. Chapter 5 Exam Prep & Review"
+
+              maxlength="150"
+
+              autocomplete="off"
+
+            />
+
+            <p class="form-error" id="edit-session-title-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <!-- Description -->
+
+          <div class="form-group">
+
+            <label for="edit-session-desc-input" class="form-label">Description <span class="optional">(optional)</span></label>
+
+            <textarea
+
+              id="edit-session-desc-input"
+
+              class="form-textarea"
+
+              placeholder="Session objectives, meeting links, or topics to cover..."
+
+              rows="3"
+
+              maxlength="500"
+
+            ></textarea>
+
+          </div>
+
+
+
+          <!-- Session Date -->
+
+          <div class="form-group">
+
+            <label for="edit-session-date-input" class="form-label">Date <span class="required">*</span></label>
+
+            <input
+
+              type="date"
+
+              id="edit-session-date-input"
+
+              class="form-input"
+
+            />
+
+            <p class="form-error" id="edit-session-date-error" role="alert" aria-live="polite"></p>
+
+          </div>
+
+
+
+          <!-- Start & End Time -->
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+
+            <div class="form-group">
+
+              <label for="edit-session-start-time-input" class="form-label">Start Time <span class="required">*</span></label>
+
+              <input
+
+                type="time"
+
+                id="edit-session-start-time-input"
+
+                class="form-input"
+
+              />
+
+              <p class="form-error" id="edit-session-start-time-error" role="alert" aria-live="polite"></p>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="edit-session-end-time-input" class="form-label">End Time <span class="required">*</span></label>
+
+              <input
+
+                type="time"
+
+                id="edit-session-end-time-input"
+
+                class="form-input"
+
+              />
+
+              <p class="form-error" id="edit-session-end-time-error" role="alert" aria-live="polite"></p>
+
+            </div>
+
+          </div>
+
+
+
+          <p class="form-error" id="edit-session-general-error" role="alert" aria-live="polite"></p>
+
+
+
+          <div class="modal-actions" style="margin-top: 20px;">
+
+            <button type="button" class="btn btn-ghost" id="cancel-edit-session-btn">Cancel</button>
+
+            <button type="submit" class="btn btn-primary" id="submit-edit-session-btn">Save Changes</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- END: Edit Study Session Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         MODAL 9: CANCEL STUDY SESSION CONFIRMATION
+
+         Shown when user clicks "Cancel" on a session card
+
+    ============================================================ -->
+
+    <div
+
+      id="cancel-session-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="cancel-session-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box" style="max-width: 440px;">
+
+        <div class="modal-header">
+
+          <h2 id="cancel-session-title" class="modal-title" style="color: var(--color-error, #ef4444);">Cancel Study Session? 🗑️</h2>
+
+          <button class="modal-close-btn" id="close-cancel-session-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <div style="padding: 8px 0 16px 0;">
+
+          <p style="font-size: 14px; color: var(--color-text); line-height: 1.5; margin-bottom: 12px;">
+
+            Are you sure you want to cancel the following study session?
+
+          </p>
+
+          <div style="background: var(--color-bg); border-left: 4px solid var(--color-error, #ef4444); padding: 12px 14px; border-radius: var(--radius-sm); margin-bottom: 12px;">
+
+            <p id="cancel-session-name" style="font-weight: 700; font-size: 15px; color: var(--color-text); margin-bottom: 4px;">--</p>
+
+            <p id="cancel-session-time" style="font-size: 12px; color: var(--color-text-muted);">--</p>
+
+          </div>
+
+          <p style="font-size: 12px; color: var(--color-text-muted); line-height: 1.4;">
+
+            This will remove the session from TeamSync and attempt to remove it from linked Google Calendars. This action cannot be undone.
+
+          </p>
+
+          <p class="form-error" id="cancel-session-general-error" role="alert" aria-live="polite" style="margin-top: 10px;"></p>
+
+        </div>
+
+
+
+        <div class="modal-actions" style="margin-top: 10px;">
+
+          <button type="button" class="btn btn-ghost" id="keep-session-btn">Keep Session</button>
+
+          <button type="button" class="btn btn-danger" id="confirm-cancel-session-btn">Yes, Cancel Session</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- END: Cancel Study Session Modal -->
+
+
+
+
+
+    <!-- ============================================================
+
+         10. MODAL: DISCONNECT GOOGLE CALENDAR CONFIRMATION
+
+         Shown before disconnecting user's Google Calendar
+
+         ============================================================ -->
+
+    <div
+
+      id="disconnect-calendar-modal"
+
+      class="modal-overlay"
+
+      role="dialog"
+
+      aria-modal="true"
+
+      aria-labelledby="disconnect-calendar-title"
+
+      hidden
+
+    >
+
+      <div class="modal-box" style="max-width: 440px;">
+
+        <div class="modal-header">
+
+          <h2 id="disconnect-calendar-title" class="modal-title" style="color: var(--color-error, #ef4444);">Disconnect Google Calendar?</h2>
+
+          <button class="modal-close-btn" id="close-disconnect-calendar-modal" aria-label="Close modal">✕</button>
+
+        </div>
+
+
+
+        <div style="padding: 8px 0 16px 0;">
+
+          <p style="font-size: 14px; color: var(--color-text); line-height: 1.5; margin-bottom: 12px;">
+
+            Are you sure you want to disconnect your Google Calendar from TeamSync?
+
+          </p>
+
+          <div style="background: var(--color-bg); border-left: 4px solid var(--color-warning, #f59e0b); padding: 12px 14px; border-radius: var(--radius-sm); margin-bottom: 12px;">
+
+            <p style="font-size: 13px; color: var(--color-text); margin-bottom: 6px; font-weight: 600;">
+
+              ⚠️ What happens next:
+
+            </p>
+
+            <ul style="font-size: 12px; color: var(--color-text-muted); line-height: 1.5; padding-left: 18px; margin: 0;">
+
+              <li>Future study sessions will no longer automatically sync to your Google Calendar.</li>
+
+              <li>Existing events already in your Google Calendar will <strong>not</strong> be automatically deleted.</li>
+
+              <li>All your study groups, tasks, and sessions in TeamSync remain completely intact.</li>
+
+            </ul>
+
+          </div>
+
+          <p class="form-error" id="disconnect-calendar-error" role="alert" aria-live="polite" style="margin-top: 10px;"></p>
+
+        </div>
+
+
+
+        <div class="modal-actions" style="margin-top: 10px;">
+
+          <button type="button" class="btn btn-ghost" id="cancel-disconnect-calendar-btn">Cancel</button>
+
+          <button type="button" class="btn btn-danger" id="confirm-disconnect-calendar-btn">Disconnect Calendar</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- END: Disconnect Google Calendar Modal -->
+
+
+
+
+
+    <!-- Our main JavaScript file — loaded at the bottom so the HTML is parsed first -->
+
+    <script src="script.js"></script>
+
+  </body>
+
+</html>
+

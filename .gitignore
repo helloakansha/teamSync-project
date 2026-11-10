@@ -1,0 +1,9 @@
+# Environment variables and secrets
+.env
+**/.env
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
