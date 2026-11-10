@@ -280,7 +280,7 @@ def remove_pkce_verifier(state_token: Optional[str]) -> None:
 
 
 
-GOOGLE_REDIRECT_URI = "http://127.0.0.1:8000/auth/google/callback"
+GOOGLE_REDIRECT_URI = (os.getenv("GOOGLE_REDIRECT_URI") or "").strip() or "http://127.0.0.1:8000/auth/google/callback"
 
 
 
@@ -514,18 +514,43 @@ def get_valid_google_credentials(user_id: int, db: Session) -> Optional[Credenti
 
 app = FastAPI(title="TeamSync API")
 
+# Explicit allowed origins for production and local development
+allowed_origins = [
+    "https://teamsync-mu-snowy.vercel.app",
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]
+
+# Allow additional custom origins via environment variable if provided
+_extra_origins = os.getenv("ALLOWED_ORIGINS") or os.getenv("CORS_ALLOWED_ORIGINS") or ""
+if _extra_origins.strip():
+    for _origin in _extra_origins.split(","):
+        _cleaned = _origin.strip()
+        if _cleaned and _cleaned not in allowed_origins:
+            allowed_origins.append(_cleaned)
+
+# If FRONTEND_URL environment variable is provided, ensure its origin is allowed
+_env_frontend = os.getenv("FRONTEND_URL")
+if _env_frontend and _env_frontend.strip():
+    from urllib.parse import urlparse
+    _parsed = urlparse(_env_frontend.strip())
+    if _parsed.scheme and _parsed.netloc:
+        _fe_origin = f"{_parsed.scheme}://{_parsed.netloc}"
+        if _fe_origin not in allowed_origins:
+            allowed_origins.append(_fe_origin)
+
 app.add_middleware(
-
     CORSMiddleware,
-
-    allow_origins=["*"],
-
+    allow_origins=allowed_origins,
     allow_credentials=False,
-
     allow_methods=["*"],
-
     allow_headers=["*"],
-
 )
 
 
