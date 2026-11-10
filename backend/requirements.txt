@@ -1,0 +1,23 @@
+# Web Framework & ASGI Server
+fastapi>=0.115.0,<1.0.0
+uvicorn[standard]>=0.30.0,<1.0.0
+
+# Schema Validation & Serialization
+pydantic>=2.8.0,<3.0.0
+
+# Database & ORM
+sqlalchemy>=2.0.30,<3.0.0
+psycopg[binary]>=3.2.0,<4.0.0
+
+# Security, Tokens & Environment
+python-dotenv>=1.0.0,<2.0.0
+python-jose[cryptography]>=3.3.0,<4.0.0
+cryptography>=43.0.0
+itsdangerous>=2.2.0,<3.0.0
+
+# Google Calendar API & OAuth 2.0 Integration
+google-api-python-client>=2.140.0,<3.0.0
+google-auth-oauthlib>=1.2.0,<2.0.0
+google-auth-httplib2>=0.2.0
+httplib2>=0.22.0
+
