@@ -109,14 +109,14 @@ def run_tests():
             access_token="fake_creator_token",
             refresh_token="fake_creator_refresh",
             token_expiry=datetime.now(timezone.utc) + timedelta(days=7),
-            scopes="https://www.googleapis.com/auth/calendar.events"
+            scopes="https://www.googleapis.com/auth/calendar.events.owned"
         )
         cred_owner = models.GoogleCredential(
             user_id=u_owner.id,
             access_token="fake_owner_token",
             refresh_token="fake_owner_refresh",
             token_expiry=datetime.now(timezone.utc) + timedelta(days=7),
-            scopes="https://www.googleapis.com/auth/calendar.events"
+            scopes="https://www.googleapis.com/auth/calendar.events.owned"
         )
         db.add_all([cred_creator, cred_owner])
         db.commit()

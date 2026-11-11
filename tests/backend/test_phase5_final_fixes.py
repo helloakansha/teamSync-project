@@ -102,7 +102,7 @@ def run_tests():
             access_token="fake_creator_token",
             refresh_token="fake_creator_refresh",
             token_expiry=datetime.now(timezone.utc) + timedelta(days=7),
-            scopes="https://www.googleapis.com/auth/calendar.events"
+            scopes="https://www.googleapis.com/auth/calendar.events.owned"
         )
         db.add(cred_creator)
         db.commit()

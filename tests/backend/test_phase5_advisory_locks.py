@@ -103,7 +103,7 @@ def run_advisory_lock_tests():
             access_token=encrypt_google_token("fake_lock_access"),
             refresh_token=encrypt_google_token("fake_lock_refresh"),
             token_expiry=datetime.now(timezone.utc) + timedelta(days=7),
-            scopes="https://www.googleapis.com/auth/calendar.events"
+            scopes="https://www.googleapis.com/auth/calendar.events.owned"
         )
         db.add(cred)
         db.commit()

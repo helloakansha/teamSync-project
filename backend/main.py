@@ -286,7 +286,7 @@ GOOGLE_REDIRECT_URI = (os.getenv("GOOGLE_REDIRECT_URI") or "").strip() or "http:
 
 GOOGLE_SCOPES = [
 
-    "https://www.googleapis.com/auth/calendar.events"
+    "https://www.googleapis.com/auth/calendar.events.owned"
 
 ]
 

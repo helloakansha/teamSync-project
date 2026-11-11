@@ -128,7 +128,7 @@ try:
         access_token=encrypt_google_token("dummy_expired_token_abc"),
         refresh_token=None,
         token_expiry=past_expiry,
-        scopes="https://www.googleapis.com/auth/calendar.events"
+        scopes="https://www.googleapis.com/auth/calendar.events.owned"
     )
     db.add(cred_expired)
     db.commit()
@@ -170,7 +170,7 @@ try:
             access_token=encrypt_google_token("user_b_token_xyz"),
             refresh_token=encrypt_google_token("user_b_refresh_xyz"),
             token_expiry=future_expiry,
-            scopes="https://www.googleapis.com/auth/calendar.events"
+            scopes="https://www.googleapis.com/auth/calendar.events.owned"
         )
         db.add(existing_cred_b)
         db.commit()
